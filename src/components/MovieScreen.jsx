@@ -1,9 +1,9 @@
-import { Fragment } from "react"
 
+import MovieCard from "./MovieCard"
 const MovieScreen = ({watchList, page, setPage, movieList}) =>{
     const movieDisplay = movieList.map((movie, index)=>{
         return (
-            <h2 key={index}>{movie.original_title}</h2>
+            <MovieCard key={index} movie={movie}> </MovieCard>
         )
     })
     return(
