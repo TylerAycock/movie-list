@@ -3,10 +3,11 @@ import './App.css'
 import Header from './components/Header'
 import axios from 'axios'
 import MovieScreen from './components/MovieScreen'
+import WatchList from './components/WatchList'
 
 function App() {
   const [movieList, setMovieList] = useState([])
-  const [watchList, setWatchList] = useState([])
+  const [list, setList] = useState([])
   const [page, setPage] = useState(1)
 
   const getData = ()=>{
@@ -20,16 +21,24 @@ function App() {
 useEffect(()=>{
   getData()
 },[page])
+
+const addMovie = movie => {
+  console.log(movie)
+  setList([...list, movie])
+}
+
   return (
     <Fragment>
       <Header/>
       <main>
         <MovieScreen
-          watchList = {watchList}
+          list = {list}
           page = {page}
           setPage = {setPage}
           movieList ={movieList}
+          addMovie={addMovie}
         />
+        <WatchList list={list}/>
       </main>
     </Fragment>
   )
