@@ -1,47 +1,55 @@
-import { useState, Fragment, useEffect} from 'react'
-import './App.css'
-import Header from './components/Header'
-import axios from 'axios'
-import MovieScreen from './components/MovieScreen'
-import WatchList from './components/WatchList'
+import { useState, Fragment, useEffect } from "react";
+import "./App.css";
+import Header from "./components/Header";
+import axios from "axios";
+import MovieScreen from "./components/MovieScreen";
+import WatchList from "./components/WatchList";
 
 function App() {
-  const [movieList, setMovieList] = useState([])
-  const [list, setList] = useState([])
-  const [page, setPage] = useState(1)
+  const [movieList, setMovieList] = useState([]);
+  const [list, setList] = useState([]);
+  const [page, setPage] = useState(1);
 
-  const getData = ()=>{
-    axios
-    .get(`https://api.themoviedb.org/3/movie/popular?api_key=${import.meta.env.VITE_APP_API_KEY}&language=en-US&page=${page}`)
-    .then(res=>{
-      console.log(res.data.results)
-      setMovieList(res.data.results)
-    })
-  }
-useEffect(()=>{
-  getData()
-},[page])
+  const getData = async () => {
+    try {
+      let res = await axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=${import.meta.env.VITE_APP_API_KEY}&language=en-US&page=${page}`);
+      setMovieList(res.data.results);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    getData();
+  }, [page]);
 
-const addMovie = movie => {
-  console.log(movie)
-  setList([...list, movie])
-}
+  const addMovie = (movie) => {
+    console.log(movie);
+    setList([...list, movie]);
+  };
+
+  const removeMovie = (movie) => {
+    let newState = list.filter((someMovies) => {
+      return someMovies !== movie;
+    });
+    setList(newState);
+  };
 
   return (
     <Fragment>
-      <Header/>
+      <Header />
       <main>
         <MovieScreen
-          list = {list}
-          page = {page}
-          setPage = {setPage}
-          movieList ={movieList}
+          list={list}
+          page={page}
+          setPage={setPage}
+          movieList={movieList}
           addMovie={addMovie}
+          removeMovie={removeMovie}
         />
-        <WatchList list={list}/>
+        <WatchList list={list} removeMovie={removeMovie} />
       </main>
     </Fragment>
-  )
+  );
 }
 
-export default App
+export default App;

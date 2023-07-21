@@ -1,16 +1,19 @@
-import './Watchlist.css'
+
 import MovieCard from './MovieCard'
 
-const WatchList = ({list}) => {
+const WatchList = ({list, removeMovie}) => {
 
-    let myList = list.map((movie, index) => {
+    let myList = list.map((indivMovie, index) => {
         return(
             <MovieCard
                 key ={index}
-                movie = {movie}
+                indivMovie = {indivMovie}
+                removeMovie={removeMovie}
+                list={list}
             />
         )
     })
+
     return(
         <>
         <div className='watchlist'>
